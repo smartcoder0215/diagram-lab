@@ -135,7 +135,7 @@ const CircularFlow = ({ data }: CircularFlowProps) => {
                       cy={pos.y} 
                       r={nodeRadius} 
                       fill={`url(#nodeGradient${index})`} 
-                      className={`drop-shadow-lg cursor-pointer hover:scale-110 transition-all duration-300 ${ 
+                      className={`drop-shadow-lg cursor-pointer ${ 
                         isSelected ? 'stroke-white stroke-4' : '' 
                       }`} 
                       onClick={() => handleNodeClick(index, branch)} 
@@ -172,7 +172,7 @@ const CircularFlow = ({ data }: CircularFlowProps) => {
                 cy={centerY} 
                 r="80" 
                 fill="url(#centerGradient)" 
-                className="drop-shadow-lg cursor-pointer hover:scale-105 transition-transform" 
+                className="drop-shadow-lg cursor-pointer" 
                 onClick={() => setSelectedNodeIndex('center')} 
               /> 
               <text 
