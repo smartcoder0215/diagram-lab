@@ -10,7 +10,7 @@
     "dev": "vite --config demo-app/vite.config.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind:init": "tailwindcss init -p"
+    "tailwind:build": "tailwindcss -i ./demo-app/src/index.css -o ./demo-app/dist/output.css --watch"
   },
   "keywords": [],
   "author": "DOCA KL",
@@ -21,13 +21,12 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.1",
     "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.4",
-    "tailwindcss": "^4.1.8",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }

@@ -191,23 +191,26 @@ const CircularFlow = ({ data }: CircularFlowProps) => {
  
         {/* Selected node details */} 
         {selectedNodeIndex !== null && ( 
-          <div className="mt-8 bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 text-white"> 
+          <div className="mt-8 bg-[#532B99] rounded-2xl p-8 transition-all duration-300 ease-in-out"> 
             {selectedNodeIndex === 'center' ? ( 
               <div> 
-                <h3 className="text-xl font-bold mb-4">{centerLabel}</h3> 
-                <p className="text-indigo-200">Main project overview with {branches.length} major phases</p> 
+                <h3 className="text-2xl font-bold text-white tracking-tight mb-3">{centerLabel}</h3> 
+                <p className="text-gray-300 text-sm">Main project overview with {branches.length} major phases</p> 
               </div> 
             ) : ( 
               <div> 
-                <h3 className="text-xl font-bold mb-4"> 
+                <h3 className="text-2xl font-bold text-white tracking-tight mb-3"> 
                   {getLabel(branches[selectedNodeIndex])} 
                 </h3> 
                 {getChildren(branches[selectedNodeIndex]).length > 0 && ( 
-                  <div> 
-                    <p className="mb-3 text-indigo-200">Sub-items:</p> 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"> 
+                  <div className="mt-4"> 
+                    <p className="text-[#A599C2] text-sm font-medium uppercase tracking-wider mb-4">Sub-items</p> 
+                    <div className="space-y-2.5"> 
                       {getChildren(branches[selectedNodeIndex]).map((child, index) => ( 
-                        <div key={index} className="bg-white bg-opacity-20 rounded-lg p-3 text-sm"> 
+                        <div 
+                          key={index} 
+                          className="bg-[#633AAD] rounded-lg p-4 text-[15px] text-white font-medium transition-all duration-200 hover:bg-[#6B42B8] hover:translate-x-0.5 cursor-default"
+                        > 
                           {getLabel(child)} 
                         </div> 
                       ))} 
