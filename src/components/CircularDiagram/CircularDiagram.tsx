@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
-import projectLifecycle from '../data/projectLifeCycleData';
+import projectLifecycle from '../../data/projectLifeCycleData';
 
 interface TreeNode {
   label: string;
