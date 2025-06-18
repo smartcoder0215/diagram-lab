@@ -12,10 +12,14 @@ import binaryTreeTwoLevel from "./data/binaryTreeTwoLevel";
 import flatTreeOneLevel from "./data/flatTree";
 import imbalancedTreeThreeLevel from "./data/imbalancedTree";
 import portersFiveForces from "./data/portersFiveForces";
+import CircularDiagram from "./components/CircularDiagram";
 
 export default function App() {
   return (
     <>
+      <div>
+        <CircularDiagram />
+      </div>
       <div>
         <ChevronDiagram data={projectLifecyle} />
       </div>
