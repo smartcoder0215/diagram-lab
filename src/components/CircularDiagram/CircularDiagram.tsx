@@ -13,6 +13,26 @@ interface CircularFlowProps {
 const CircularFlow = ({ data }: CircularFlowProps) => { 
   const [selectedNodeIndex, setSelectedNodeIndex] = useState<number | string | null>(null); 
   const [rotationOffset, setRotationOffset] = useState(0); 
+  const [targetRotation, setTargetRotation] = useState(0);
+  const [isAnimatingToTarget, setIsAnimatingToTarget] = useState(false);
+  
+  // Animation to target position when node is selected
+  useEffect(() => {
+    if (!isAnimatingToTarget) return;
+    
+    const interval = setInterval(() => {
+      setRotationOffset(prev => {
+        const diff = targetRotation - prev;
+        if (Math.abs(diff) < 1) {
+          setIsAnimatingToTarget(false);
+          return targetRotation;
+        }
+        return prev + diff * 0.1; // Smooth easing
+      });
+    }, 50); // Update every 50ms for smooth animation
+    
+    return () => clearInterval(interval);
+  }, [isAnimatingToTarget, targetRotation]);
   
   // Helper functions 
   const getLabel = (node: TreeNode | string): string => { 
@@ -39,12 +59,14 @@ const CircularFlow = ({ data }: CircularFlowProps) => {
   // Handle node click and rotation 
   const handleNodeClick = (index: number, branch: TreeNode) => { 
     const branches = getChildren(data); 
-    // Calculate rotation needed to bring clicked node to top (90 degrees) 
-    const targetAngle = -90; // Top position in degrees 
+    // Calculate rotation needed to bring clicked node to top (270 degrees in SVG coordinates)
+    const targetAngle = 270; // Top position in degrees (SVG coordinate system)
     const currentAngle = (index * 360) / branches.length; 
     const rotationNeeded = targetAngle - currentAngle; 
-     
-    setRotationOffset(prev => prev + rotationNeeded); 
+    
+    // Set target rotation and start animation
+    setTargetRotation(rotationNeeded);
+    setIsAnimatingToTarget(true);
     setSelectedNodeIndex(index); 
   }; 
  
