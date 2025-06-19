@@ -133,7 +133,7 @@ const BrickWallDiagram: React.FC<BrickWallDiagramProps> = ({ data, title = "Bric
     <div className="w-full max-w-7xl mx-auto p-8 bg-gradient-to-br from-amber-50 to-orange-100 border-4 border-amber-800 rounded-3xl shadow-2xl">
       <h2 className="text-4xl font-bold text-center mb-12 text-amber-900 drop-shadow-lg">{title}</h2>
       
-      <div className="relative mx-auto" style={{ width: `${containerWidth}px` }}>
+      <div className="relative ml-8" style={{ width: `${containerWidth}px` }}>
         {Array.from({ length: rows }, (_, rowIndex) => {
           const isEvenRow = rowIndex % 2 === 0;
           const rowBricks = allBricks.slice(rowIndex * bricksPerRow, (rowIndex + 1) * bricksPerRow);
