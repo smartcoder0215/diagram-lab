@@ -116,16 +116,16 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
       </h1>
 
       <div className="relative w-full max-w-6xl">
-        <div className="absolute left-1/2 w-2 h-full bg-gradient-to-r from-gray-600 to-gray-800 transform -translate-x-1/2 z-10 rounded-full shadow-lg" />
+        <div className="absolute left-1/2 w-2 h-full bg-gradient-to-r from-gray-600 to-gray-800 transform -translate-x-1/2 z-40 rounded-full shadow-lg" />
 
         {pointers.map((item, idx) => (
           <div
             key={idx}
             className={cn(
-              "relative flex items-center my-8 z-20 opacity-0 animate-fade-in",
+              "relative flex items-center my-8 z-30 opacity-0 animate-fade-in",
               item.direction === "left"
-                ? "justify-end pr-16"
-                : "justify-start pl-16"
+                ? "justify-end pr-80"
+                : "justify-start pl-80"
             )}
             style={{
               animationDelay: `${idx * 0.15}s`,
@@ -136,19 +136,19 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
               className={cn(
                 "pointer-3d",
                 item.direction === "left"
-                  ? "pointer-3d-left"
-                  : "pointer-3d-right"
+                  ? "pointer-3d-right"
+                  : "pointer-3d-left"
               )}
             >
               <div
                 className={cn(
-                  "pointer-shadow absolute",
+                  "pointer-shadow absolute z-30",
                   item.colorTheme.shadow
                 )}
               />
               <div
                 className={cn(
-                  "pointer-main relative z-10 text-white text-lg font-bold px-8 py-4 border-2",
+                  "pointer-main relative z-40 text-white text-lg font-bold px-8 py-4 border-2",
                   item.colorTheme.main,
                   item.colorTheme.border
                 )}
@@ -157,14 +157,14 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
               </div>
               <div
                 className={cn(
-                  "pointer-tip absolute",
+                  "pointer-tip absolute z-40",
                   item.colorTheme.main,
                   item.colorTheme.border
                 )}
               />
               <div
                 className={cn(
-                  "pointer-tip-shadow absolute",
+                  "pointer-tip-shadow absolute z-30",
                   item.colorTheme.shadow
                 )}
               />
@@ -173,7 +173,7 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
         ))}
       </div>
 
-      <style jsx>{`
+      <style>{`
         .pointer-3d {
           position: relative;
           min-width: 250px;
