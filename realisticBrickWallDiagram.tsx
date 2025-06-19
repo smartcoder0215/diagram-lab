@@ -265,7 +265,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 space-y-12">
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-8 space-y-12">
       <BrickWallDiagram 
         data={simpleDemoData} 
         title="Hierarchical: Kanban Board as Brick Wall"

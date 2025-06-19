@@ -110,7 +110,7 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
   const pointers = flattenTree(data);
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-gray-800 to-gray-900 flex flex-col items-center justify-center px-6 py-12">
+    <div className="w-full bg-gradient-to-b from-gray-800 to-gray-900 flex flex-col items-center justify-center px-6 py-12">
       <h1 className="text-4xl text-white font-bold mb-12 text-center">
         {data.label}
       </h1>

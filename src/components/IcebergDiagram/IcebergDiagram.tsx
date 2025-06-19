@@ -43,7 +43,7 @@ const IcebergDiagram: React.FC<IcebergDiagramProps> = ({ data }) => {
   );
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-8 bg-white min-h-screen relative">
+    <div className="w-full max-w-7xl mx-auto p-8 bg-white relative">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">
           {data.label.toUpperCase()}
