@@ -19,6 +19,13 @@ const PuzzleWall: React.FC<PuzzleWallProps> = ({
   const pieceWidth = width / columns;
   const pieceHeight = height / rows;
   
+  const getPuzzleTabState = (r: number, c: number) => {
+    return {
+      hasRightTab: (r * columns + c) % 2 === 0,
+      hasBottomTab: (r * columns + c) % 2 === 1
+    };
+  };
+  
   const getPuzzlePath = (r: number, c: number): string => {
     const w = pieceWidth;
     const h = pieceHeight;
@@ -26,11 +33,11 @@ const PuzzleWall: React.FC<PuzzleWallProps> = ({
     const curve = tabSize * 0.4;
     
     // Determine which sides have tabs (outward) vs blanks (inward)
-    // Using a pseudo-random pattern based on position
-    const hasLeftTab = (r + c * 3) % 2 === 0;
-    const hasTopTab = (r * 2 + c) % 2 === 0;
-    const hasRightTab = (r + c * 5) % 2 === 0;
-    const hasBottomTab = (r * 3 + c * 2) % 2 === 0;
+    // Using position-based pattern to ensure adjacent pieces match
+    const hasRightTab = (r * columns + c) % 2 === 0;
+    const hasBottomTab = (r * columns + c) % 2 === 1;
+    const hasLeftTab = c > 0 ? !getPuzzleTabState(r, c - 1).hasRightTab : (r + c) % 2 === 0;
+    const hasTopTab = r > 0 ? !getPuzzleTabState(r - 1, c).hasBottomTab : (r + c) % 2 === 1;
     
     const left = c > 0;
     const right = c < columns - 1;
