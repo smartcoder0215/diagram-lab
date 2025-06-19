@@ -6,3 +6,5 @@ export { default as RoadpointerDiagram } from "./components/RoadpointerDiagram/R
 export { default as IcebergDiagram } from "./components/IcebergDiagram/IcebergDiagram";
 export { default as PorterForceDiagram } from "./components/PorterForceDiagram/PorterForceDiagram";
 export { default as CircularDiagram } from "./components/CircularDiagram";
+export { default as BrickWallDiagram } from "./components/BrickWallDiagram";
+export { default as PuzzleWall } from "./components/PuzzleWall";
