@@ -110,13 +110,14 @@ interface TreeNode {
 }
 
 interface PointerItem {
-  label:string;
+  label: string;
   direction: "left" | "right";
   color: string;
+  transform: string;
 }
 
 // This function converts the hierarchical data into a flat list for rendering
-function flattenTree(data: TreeNode): {label:string, items: PointerItem[]} {
+function flattenTree(data: TreeNode): { label: string, items: PointerItem[] } {
     const items: PointerItem[] = [];
     if(!data.children) return {label: data.label, items:[]};
 
@@ -128,10 +129,17 @@ function flattenTree(data: TreeNode): {label:string, items: PointerItem[]} {
 
         group.children.forEach((child) => {
             const label = typeof child === 'string' ? child : child.label;
+            const direction: "left" | "right" = itemIdx % 2 === 0 ? 'left' : 'right';
+
+            const yRotation = (direction === 'left' ? 1 : -1) * (Math.random() * 15 + 10);
+            const zRotation = (Math.random() * 8 - 4);
+            const transform = `rotateY(${yRotation.toFixed(2)}deg) rotateZ(${zRotation.toFixed(2)}deg)`;
+
             items.push({
                 label,
-                direction: itemIdx % 2 === 0 ? 'left' : 'right',
+                direction,
                 color,
+                transform,
             });
             itemIdx++;
         });
@@ -149,7 +157,7 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
         {label}
       </h1>
 
-      <div className="relative max-w-sm">
+      <div className="relative max-w-sm" style={{ perspective: "1000px" }}>
         <div
           className="absolute left-1/2 w-4 h-full bg-gray-600 shadow-xl"
           style={{
@@ -159,11 +167,12 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
           }}
         />
 
-        <div className="relative z-10 space-y-8">
+        <div className="relative z-10 space-y-12">
           {items.map((item, idx) => (
             <div
               key={idx}
               className="relative h-20"
+              style={{ transform: item.transform }}
             >
               <Pointer
                 label={item.label}
