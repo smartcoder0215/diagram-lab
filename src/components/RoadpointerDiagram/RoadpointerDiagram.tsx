@@ -14,13 +14,11 @@ const colorThemes = [
 const Pointer = ({
   label,
   direction,
-  color,
 }: {
   label: string;
   direction: "left" | "right";
-  color: string;
 }) => {
-  const width = 320;
+  const width = Math.max(220, label.length * 15 + 130);
   const height = 75;
   const tipWidth = 50;
   const bevel = 6; // Bevel width
@@ -60,8 +58,8 @@ const Pointer = ({
       style={{
         position: 'absolute',
         ...(direction === 'left' 
-            ? { right: 'calc(50% + 7px)' } 
-            : { left: 'calc(50% + 7px)' }),
+            ? { right: 'calc(50% + 12px)' } 
+            : { left: 'calc(50% + 12px)' }),
       }}
     >
       <defs>
@@ -71,6 +69,13 @@ const Pointer = ({
             <stop offset="90%" stopColor="#fff" stopOpacity="0.05"/>
             <stop offset="100%" stopColor="#fff" stopOpacity="0.2"/>
         </linearGradient>
+        <pattern id="wood-pattern" patternUnits="userSpaceOnUse" width={width} height={height} >
+            <rect width={width} height={height} fill="#d2b48c" />
+            <line x1="0" y1="15" x2={width} y2="12" stroke="#a0522d" strokeOpacity="0.2" strokeWidth="2" />
+            <line x1="0" y1="30" x2={width} y2="35" stroke="#a0522d" strokeOpacity="0.3" strokeWidth="3" />
+            <line x1="0" y1="55" x2={width} y2="50" stroke="#a0522d" strokeOpacity="0.25" strokeWidth="2.5" />
+            <line x1="0" y1="65" x2={width} y2="70" stroke="#a0522d" strokeOpacity="0.15" strokeWidth="1.5" />
+        </pattern>
       </defs>
 
       {/* Main body with beveled edges */}
@@ -80,7 +85,7 @@ const Pointer = ({
       <polygon points={points.tipBevelBottom} fill="#b0b0b0" />
 
       {/* Inner colored panel */}
-      <polygon points={points.inner} fill={color} />
+      <polygon points={points.inner} fill="url(#wood-pattern)" />
       <polygon points={points.inner} fill="url(#inner-shadow)" />
       
       <text
@@ -159,15 +164,18 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
 
       <div className="relative max-w-sm" style={{ perspective: "1000px" }}>
         <div
-          className="absolute left-1/2 w-4 h-full bg-gray-600 shadow-xl"
+          className="absolute left-1/2 w-6 h-full"
           style={{
             transform: "translateX(-50%)",
-            background: "linear-gradient(90deg, #6b7280, #4b5563, #6b7280)",
             boxShadow: "0 0 15px rgba(0,0,0,0.5)"
           }}
-        />
+        >
+          <div className="h-full" style={{ background: 'linear-gradient(90deg, #c0c0c0, #909090, #c0c0c0)'}}></div>
+          <div className="absolute top-[-5px] left-0 w-full h-[5px]" style={{ background: 'linear-gradient(90deg, #d0d0d0, #a0a0a0, #d0d0d0)', borderRadius: '2px 2px 0 0' }}></div>
+          <div className="absolute bottom-[-15px] left-[-4px] w-8 h-[15px]" style={{ background: 'linear-gradient(90deg, #b0b0b0, #808080, #b0b0b0)', borderRadius: '3px' }}></div>
+        </div>
 
-        <div className="relative z-10 space-y-12">
+        <div className="relative z-10 space-y-2">
           {items.map((item, idx) => (
             <div
               key={idx}
@@ -177,7 +185,6 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
               <Pointer
                 label={item.label}
                 direction={item.direction}
-                color={item.color}
               />
             </div>
           ))}
