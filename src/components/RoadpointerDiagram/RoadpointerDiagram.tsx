@@ -23,21 +23,34 @@ const Pointer = ({
   const width = 320;
   const height = 75;
   const tipWidth = 50;
-  const inset = 6;
+  const bevel = 6; // Bevel width
 
-  const getPoints = (w: number, h: number, tip: number, isInset: boolean) => {
-    const i = isInset ? inset : 0;
-    const iTip = isInset ? inset * 1.5 : 0;
+  const p = (points: [number, number][]) => points.map(p => p.join(',')).join(' ');
 
-    if (direction === "right") {
-      return `${i},${i} ${w - tip - i},${i} ${w - iTip},${h / 2} ${w - tip - i},${h - i} ${i},${h - i}`;
+  const getBodyPoints = (w: number, h: number, tip: number) => {
+    if (direction === 'right') {
+      return {
+        outer: p([[0,0], [w-tip,0], [w,h/2], [w-tip,h], [0,h]]),
+        inner: p([[bevel,bevel], [w-tip-bevel/2, bevel], [w-bevel, h/2], [w-tip-bevel/2, h-bevel], [bevel, h-bevel]]),
+        topBevel: p([[0,0], [w-tip,0], [w-tip-bevel/2, bevel], [bevel,bevel]]),
+        bottomBevel: p([[0,h], [w-tip,h], [w-tip-bevel/2, h-bevel], [bevel,h-bevel]]),
+        tipBevel: p([[w-tip,0], [w,h/2], [w-bevel, h/2], [w-tip-bevel/2, bevel]]),
+        tipBevelBottom: p([[w-tip,h], [w,h/2], [w-bevel, h/2], [w-tip-bevel/2, h-bevel]]),
+      };
     }
-    return `${w - i},${i} ${tip + i},${i} ${iTip},${h / 2} ${tip + i},${h - i} ${w - i},${h - i}`;
+    // left
+    return {
+      outer: p([[w,0], [tip,0], [0,h/2], [tip,h], [w,h]]),
+      inner: p([[w-bevel, bevel], [tip+bevel/2, bevel], [bevel,h/2], [tip+bevel/2, h-bevel], [w-bevel,h-bevel]]),
+      topBevel: p([[w,0], [tip,0], [tip+bevel/2, bevel], [w-bevel,bevel]]),
+      bottomBevel: p([[w,h], [tip,h], [tip+bevel/2, h-bevel], [w-bevel,h-bevel]]),
+      tipBevel: p([[tip,0], [0,h/2], [bevel,h/2], [tip+bevel/2, bevel]]),
+      tipBevelBottom: p([[tip,h], [0,h/2], [bevel,h/2], [tip+bevel/2, h-bevel]]),
+    };
   };
   
-  const outerPoints = getPoints(width, height, tipWidth, false);
-  const innerPoints = getPoints(width, height, tipWidth, true);
-  const textX = direction === 'right' ? width / 2.2 - tipWidth / 2 : width / 1.8 + tipWidth / 2;
+  const points = getBodyPoints(width, height, tipWidth);
+  const textX = direction === 'right' ? (width - tipWidth) / 2 : (width + tipWidth) / 2;
 
   return (
     <svg
@@ -45,21 +58,34 @@ const Pointer = ({
       height={height}
       className="drop-shadow-lg"
       style={{
-        transform: direction === "left" ? `translateX(-${width-100}px)` : `translateX(${width-100}px)`
+        position: 'absolute',
+        ...(direction === 'left' 
+            ? { right: 'calc(50% + 7px)' } 
+            : { left: 'calc(50% + 7px)' }),
       }}
     >
       <defs>
-        <linearGradient id="silver" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style={{ stopColor: '#e0e0e0' }} />
-          <stop offset="50%" style={{ stopColor: '#c0c0c0' }} />
-          <stop offset="100%" style={{ stopColor: '#a0a0a0' }} />
+        <linearGradient id="inner-shadow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#000" stopOpacity="0.2"/>
+            <stop offset="10%" stopColor="#000" stopOpacity="0.05"/>
+            <stop offset="90%" stopColor="#fff" stopOpacity="0.05"/>
+            <stop offset="100%" stopColor="#fff" stopOpacity="0.2"/>
         </linearGradient>
       </defs>
-      <polygon points={outerPoints} fill="url(#silver)" />
-      <polygon points={innerPoints} fill={color} />
+
+      {/* Main body with beveled edges */}
+      <polygon points={points.topBevel} fill="#f5f5f5" />
+      <polygon points={points.bottomBevel} fill="#a0a0a0" />
+      <polygon points={points.tipBevel} fill="#e0e0e0" />
+      <polygon points={points.tipBevelBottom} fill="#b0b0b0" />
+
+      {/* Inner colored panel */}
+      <polygon points={points.inner} fill={color} />
+      <polygon points={points.inner} fill="url(#inner-shadow)" />
+      
       <text
         x={textX}
-        y="53%"
+        y="50%"
         dominantBaseline="middle"
         textAnchor="middle"
         fill="white"
@@ -137,10 +163,7 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
           {items.map((item, idx) => (
             <div
               key={idx}
-              className={cn(
-                "relative flex items-center h-20",
-                item.direction === "left" ? "justify-start" : "justify-end"
-              )}
+              className="relative h-20"
             >
               <Pointer
                 label={item.label}
