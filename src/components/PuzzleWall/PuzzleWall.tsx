@@ -142,7 +142,7 @@ const PuzzleWall: React.FC<PuzzleWallProps> = ({
           const x = c * pieceWidth;
           const y = r * pieceHeight;
           const item = items[idx];
-          const hue = (idx * 37) % 360;
+          const hue = (r * 60) % 360;
           
           return (
             <g key={idx} transform={`translate(${x}, ${y})`}>

@@ -15,12 +15,37 @@ import flatTreeOneLevel from "./data/flatTree";
 import imbalancedTreeThreeLevel from "./data/imbalancedTree";
 import portersFiveForces from "./data/portersFiveForces";
 import { brickWallData, flatBrickWallData } from "./data/brickWallData";
-import { puzzleWallData } from "./data/puzzleWallData";
 
 export default function App() {
   const handlePuzzlePieceClick = (index: number, item: string) => {
     console.log(`Clicked puzzle piece ${index}: ${item}`);
   };
+
+  // Extract all tasks from the hierarchical brickWallData
+  const extractAllTasks = (data: any): string[] => {
+    const tasks: string[] = [];
+    
+    if (data.children) {
+      data.children.forEach((child: any) => {
+        if (Array.isArray(child)) {
+          // Direct array of strings
+          tasks.push(...child);
+        } else if (typeof child === 'string') {
+          // Direct string
+          tasks.push(child);
+        } else if (child.children) {
+          // Nested object with children
+          if (Array.isArray(child.children)) {
+            tasks.push(...child.children);
+          }
+        }
+      });
+    }
+    
+    return tasks;
+  };
+
+  const projectTasks = extractAllTasks(brickWallData);
 
   return (
     <>
@@ -60,7 +85,7 @@ export default function App() {
           <p className="text-gray-600 mt-2">Click on puzzle pieces to interact with them</p>
         </div>
         <PuzzleWall 
-          items={puzzleWallData} 
+          items={projectTasks} 
           columns={4} 
           width={800} 
           height={500} 
