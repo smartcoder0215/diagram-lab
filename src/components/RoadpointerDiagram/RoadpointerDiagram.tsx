@@ -162,11 +162,11 @@ export const RoadpointerDiagram: React.FC<{ data: TreeNode }> = ({ data }) => {
         {label}
       </h1>
 
-      <div className="relative max-w-sm" style={{ perspective: "1000px" }}>
+      <div className="relative max-w-sm" style={{ perspective: "1000px", height: `${80 + items.length * 87}px` }}>
         <div
           className="absolute left-1/2 w-6"
           style={{
-            height: `${80 + items.length * 85}px`,
+            height: `${80 + items.length * 87}px`,
             transform: "translateX(-50%)",
             boxShadow: "0 0 15px rgba(0,0,0,0.5)"
           }}
